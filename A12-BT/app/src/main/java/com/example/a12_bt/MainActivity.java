@@ -1,6 +1,8 @@
 package com.example.a12_bt;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,6 +10,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.a12_bt.databinding.ActivityMainBinding;
 
@@ -60,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
         ////Toast.makeText(this, "You chose : " + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
         switch (menuItem.getItemId()) {
             case R.id.first_item:
-                binding.vvTvOut1.setText("First Selected");
+                //binding.vvTvOut1.setText("First Selected");
+                cpf_requestBTPermissions();
                 return true;
             case R.id.second_item:
                 binding.vvTvOut1.setText("Second Selected");
@@ -70,6 +75,52 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
+        }
+    }
+
+    private void cpf_checkBTPermissions() {
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED) {
+            binding.vvTvOut1.setText("BLUETOOTH_SCAN already granted.\n");
+        }
+        else {
+            binding.vvTvOut1.setText("BLUETOOTH_SCAN NOT granted.\n");
+        }
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
+            binding.vvTvOut2.setText("BLUETOOTH_CONNECT NOT granted.\n");
+        }
+        else {
+            binding.vvTvOut2.setText("BLUETOOTH_CONNECT already granted.\n");
+        }
+    }
+
+    // https://www.geeksforgeeks.org/android-how-to-request-permissions-in-android-application/
+    private void cpf_requestBTPermissions() {
+        // We can give any value but unique for each permission.
+        final int BLUETOOTH_SCAN_CODE = 100;
+        final int BLUETOOTH_CONNECT_CODE = 101;
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.BLUETOOTH_SCAN},
+                    BLUETOOTH_SCAN_CODE);
+        }
+        else {
+            Toast.makeText(MainActivity.this,
+                    "BLUETOOTH_SCAN already granted", Toast.LENGTH_SHORT) .show();
+        }
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.BLUETOOTH_CONNECT},
+                    BLUETOOTH_CONNECT_CODE);
+        }
+        else {
+            Toast.makeText(MainActivity.this,
+                    "BLUETOOTH_CONNECT already granted", Toast.LENGTH_SHORT) .show();
         }
     }
 }
