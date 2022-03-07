@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">A04-BBMF</string>
+    <string name="first_item">First</string>
+    <string name="second_item">Second</string>
+    <string name="third_item">Third</string>
+    <string name="button">Button</string>
+
+    <string name="first">First Selected</string>
+    <string name="second">Second Selected</string>
+</resources>
