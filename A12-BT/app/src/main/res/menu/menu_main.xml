@@ -5,8 +5,8 @@
         android:title="@string/menu_first" />
     <item
         android:id="@+id/second_item"
-        android:title="@string/second_item" />
+        android:title="@string/menu_second" />
     <item
         android:id="@+id/third_item"
-        android:title="@string/third_item" />
+        android:title="@string/menu_third" />
 </menu>

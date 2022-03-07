@@ -26,14 +26,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         /////setContentView(R.layout.activity_main);
 
-        // ------
-        // Need grant permission once per install
-        //cpf_checkBTPermissions();
-        // ------
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        // Need grant permission once per install
+        cpf_checkBTPermissions();
 
         ////Button button = (Button)findViewById(R.id.button);
         binding.button.setOnClickListener(
