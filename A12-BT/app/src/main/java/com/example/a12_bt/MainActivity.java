@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                         //Implement event handling
                         Context ctx =  MainActivity.this;
                         ////Toast.makeText(ctx, "Hello", Toast.LENGTH_LONG).show();
-                        binding.textView.setText("Hello Android 426");
+                        binding.vvTvOut1.setText("Hello Android 426");
                     }
                 });
         binding.fab.setOnClickListener(new View.OnClickListener() {
@@ -60,13 +60,13 @@ public class MainActivity extends AppCompatActivity {
         ////Toast.makeText(this, "You chose : " + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
         switch (menuItem.getItemId()) {
             case R.id.first_item:
-                binding.textView.setText("First Selected");
+                binding.vvTvOut1.setText("First Selected");
                 return true;
             case R.id.second_item:
-                binding.textView.setText("Second Selected");
+                binding.vvTvOut1.setText("Second Selected");
                 return true;
             case R.id.third_item:
-                binding.textView.setText("Third Selected");
+                binding.vvTvOut1.setText("Third Selected");
                 return true;
             default:
                 return super.onOptionsItemSelected(menuItem);

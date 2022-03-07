@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">A12-BT</string>
     <string name="first_item">First</string>
+    <string name="menu_first">1. Grant Permission</string>
     <string name="second_item">Second</string>
     <string name="third_item">Third</string>
     <string name="button">Button</string>
