@@ -19,11 +19,17 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
+
     /* onCreate START --------------------------------------- */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /////setContentView(R.layout.activity_main);
+
+        // ------
+        // Need grant permission once per install
+        //cpf_checkBTPermissions();
+        // ------
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
