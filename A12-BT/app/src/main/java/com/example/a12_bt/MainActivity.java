@@ -20,10 +20,18 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import com.example.a12_bt.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
+
+    //// HERE
+    // Data stream to/from NXT bluetooth
+    private InputStream cv_is = null;
+    private OutputStream cv_os = null;
 
     // BT Variables
     private final String CV_ROBOTNAME = "EV3A";
@@ -85,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_third: cpf_connectToEV3(cv_btDevice);
                 return true;
+            case R.id.menu_fourth: cpf_EV3MoveMotor();
+                return true;
+            case R.id.menu_fifth: cpf_EV3PlayTone();
+                return true;
+            case R.id.menu_sixth: cpf_disconnFromEV3(cv_btDevice);
+                return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
@@ -126,6 +140,68 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void cpf_disconnFromEV3(BluetoothDevice bd) {
+        try {
+            cv_btSocket.close();
+            cv_is.close();
+            cv_os.close();
+            binding.vvTvOut2.setText(bd.getName() + " is disconnect " );
+        } catch (Exception e) {
+            binding.vvTvOut2.setText("Error in disconnect -> " + e.getMessage());
+        }
+    }
+
+    // Communication Developer Kit Page 27
+    // 4.2.2 Start motor B & C forward at power 50 for 3 rotation and braking at destination
+    private void cpf_EV3MoveMotor() {
+        try {
+            byte[] buffer = new byte[20];       // 0x12 command length
+
+            buffer[0] = (byte) (20-2);
+            buffer[1] = 0;
+
+            buffer[2] = 34;
+            buffer[3] = 12;
+
+            buffer[4] = (byte) 0x80;
+
+            buffer[5] = 0;
+            buffer[6] = 0;
+
+            buffer[7] = (byte) 0xae;
+            buffer[8] = 0;
+
+            buffer[9] = (byte) 0x06;
+
+            buffer[10] = (byte) 0x81;
+            buffer[11] = (byte) 0x32;
+
+            buffer[12] = 0;
+
+            buffer[13] = (byte) 0x82;
+            buffer[14] = (byte) 0x84;
+            buffer[15] = (byte) 0x03;
+
+            buffer[16] = (byte) 0x82;
+            buffer[17] = (byte) 0xB4;
+            buffer[18] = (byte) 0x00;
+
+            buffer[19] = 1;
+
+            cv_os.write(buffer);
+            cv_os.flush();
+        }
+        catch (Exception e) {
+            binding.vvTvOut1.setText("Error in MoveForward(" + e.getMessage() + ")");
+        }
+    }
+
+    // 4.2.5 Play a 1Kz tone at level 2 for 1 sec.
+    private void cpf_EV3PlayTone() {
+        // ...
+    }
+
+    // BLUETOOTH ===============================
     private void cpf_checkBTPermissions() {
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED) {
