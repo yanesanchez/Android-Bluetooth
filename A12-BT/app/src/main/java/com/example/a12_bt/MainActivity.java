@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // --- MENU OPTION 2
     // Modify from chap14, pp390 findRobot()
     private BluetoothDevice cpf_locateInPairedBTList(String name) {
         BluetoothDevice lv_bd = null;
@@ -126,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
-    // Modify frmo chap14, pp391 connectToRobot()
+    // --- MENU OPTION 3
+    // Modify from chap14, pp391 connectToRobot()
     private void cpf_connectToEV3(BluetoothDevice bd) {
         try  {
             cv_btSocket = bd.createRfcommSocketToServiceRecord
@@ -140,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // --- MENU OPTION 6
     private void cpf_disconnFromEV3(BluetoothDevice bd) {
         try {
             cv_btSocket.close();
@@ -151,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // --- MENU OPTION 4
     // Communication Developer Kit Page 27
     // 4.2.2 Start motor B & C forward at power 50 for 3 rotation and braking at destination
     private void cpf_EV3MoveMotor() {
@@ -196,9 +200,46 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // --- MENU OPTION 5
     // 4.2.5 Play a 1Kz tone at level 2 for 1 sec.
     private void cpf_EV3PlayTone() {
-        // ...
+        // +++
+        try {
+            byte[] buffer = new byte[17];       // 0x12 command length
+
+            buffer[0] = (byte) (17 - 2);
+            buffer[1] = 0;
+
+            buffer[2] = 34;
+            buffer[3] = 12;
+
+            buffer[4] = (byte) 0x80;
+
+            buffer[5] = 0;
+            buffer[6] = 0;
+
+            buffer[7] = (byte) 0x94;
+            buffer[8] = 1;
+
+            buffer[9] = (byte) 0x81;
+
+            buffer[10] = 2;
+            buffer[11] = (byte) 0x82;
+
+            buffer[12] = (byte) 0xE8;
+
+            buffer[13] = 3;
+            buffer[14] = (byte) 0x82;
+            buffer[15] = (byte) 0xE8;
+
+            buffer[16] = 3;
+
+            cv_os.write(buffer);
+            cv_os.flush();
+        }
+        catch (Exception e) {
+            binding.vvTvOut1.setText("Error in PlayTone(" + e.getMessage() + ")");
+        }
     }
 
     // BLUETOOTH ===============================
@@ -219,6 +260,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // --- MENU OPTION 1
     // https://www.geeksforgeeks.org/android-how-to-request-permissions-in-android-application/
     private void cpf_requestBTPermissions() {
         // We can give any value but unique for each permission.
