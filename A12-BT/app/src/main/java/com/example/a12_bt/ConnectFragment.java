@@ -1,6 +1,7 @@
 package com.example.a12_bt;
 
 import android.Manifest;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -28,6 +29,7 @@ import com.example.a12_bt.databinding.FragmentConnectBinding;
 public class ConnectFragment extends Fragment {
     private FragmentConnectBinding binding;
     private FragmentDataPassListener cv_listener;
+    Activity mainActivity;
 
     // Data stream to/from NXT bluetooth
     private InputStream cv_is = null;
@@ -43,6 +45,10 @@ public class ConnectFragment extends Fragment {
 
     public ConnectFragment() {
         // Required empty public constructor
+    }
+
+    public ConnectFragment(Activity mainActivity) {
+        this.mainActivity = mainActivity;
     }
 
     // assign cv_listener to MainActivity (which implements MyFragmentDataPassListener)
@@ -73,16 +79,16 @@ public class ConnectFragment extends Fragment {
 
     // BLUETOOTH ===============================
     // TODO change "Context" parameter to correct context
-    /*
+
     private void cpf_checkBTPermissions() {
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
+        if (ContextCompat.checkSelfPermission(mainActivity,
                 Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED) {
             binding.vvTvOut1.setText("BLUETOOTH_SCAN already granted.\n");
         }
         else {
             binding.vvTvOut1.setText("BLUETOOTH_SCAN NOT granted.\n");
         }
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
+        if (ContextCompat.checkSelfPermission(mainActivity,
                 Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
             binding.vvTvOut2.setText("BLUETOOTH_CONNECT NOT granted.\n");
         }
@@ -98,31 +104,33 @@ public class ConnectFragment extends Fragment {
         final int BLUETOOTH_SCAN_CODE = 100;
         final int BLUETOOTH_CONNECT_CODE = 101;
 
+        Context context = binding.getRoot().getContext();
 
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
+
+        if (ContextCompat.checkSelfPermission(binding.getRoot().getContext(),
                 Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(MainActivity.this,
+            ActivityCompat.requestPermissions(mainActivity,
                     new String[]{Manifest.permission.BLUETOOTH_SCAN},
                     BLUETOOTH_SCAN_CODE);
         }
         else {
-            Toast.makeText(MainActivity.this,
+            Toast.makeText(binding.getRoot().getContext(),
                     "BLUETOOTH_SCAN already granted", Toast.LENGTH_SHORT) .show();
         }
 
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
+        if (ContextCompat.checkSelfPermission(mainActivity,
                 Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(MainActivity.this,
+            ActivityCompat.requestPermissions(mainActivity,
                     new String[]{Manifest.permission.BLUETOOTH_CONNECT},
                     BLUETOOTH_CONNECT_CODE);
         }
         else {
-            Toast.makeText(MainActivity.this,
+            Toast.makeText(mainActivity,
                     "BLUETOOTH_CONNECT already granted", Toast.LENGTH_SHORT) .show();
         }
     }
 
-     */
+
 
     // --- MENU OPTION 2
     // Modify from chap14, pp390 findRobot()

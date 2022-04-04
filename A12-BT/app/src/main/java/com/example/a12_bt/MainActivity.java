@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
         // +++
         // Create fragments for Drive & Connect
         fragDrive = new DriveFragment();
-        fragConnect = new ConnectFragment();
+        fragConnect = new ConnectFragment(MainActivity.this);
 
         cv_tabBar = binding.tabLayout;
 
