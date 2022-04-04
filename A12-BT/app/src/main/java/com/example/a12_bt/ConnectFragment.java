@@ -73,7 +73,6 @@ public class ConnectFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentConnectBinding.inflate(inflater, container, false);
-        // TODO add button listeners
         binding.vvBtnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,7 +88,6 @@ public class ConnectFragment extends Fragment {
                 cpf_disconnFromEV3(cv_btDevice);
             }
         });
-
 
         return binding.getRoot();
     }
@@ -120,7 +118,6 @@ public class ConnectFragment extends Fragment {
         // We can give any value but unique for each permission.
         final int BLUETOOTH_SCAN_CODE = 100;
         final int BLUETOOTH_CONNECT_CODE = 101;
-
 
         if (ContextCompat.checkSelfPermission(binding.getRoot().getContext(),
                 Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_DENIED) {

@@ -51,14 +51,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /////setContentView(R.layout.activity_main);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
-        // Need grant permission once per install
-        //cpf_checkBTPermissions();
 
         // +++
         // Create fragments for Drive & Connect
@@ -82,26 +78,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
             }
         });
 
-        ////Button button = (Button)findViewById(R.id.button);
-        /*
-        binding.button.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //Implement event handling
-                        Context ctx =  MainActivity.this;
-                        ////Toast.makeText(ctx, "Hello", Toast.LENGTH_LONG).show();
-                        binding.vvTvOut1.setText("Hello Android 426");
-                    }
-                });
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "FAB Pressed", Toast.LENGTH_LONG).show();
-            }
-        });
-
-         */
 
     }
     /* onCreate END --------------------------------------- */
@@ -113,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
     }
 
     public void setContentFragment(int id) {
+        // id number corresponds to tab position
         switch (id) {
             case 0:
                 loadFragment(this, R.id.vv_fragmentContainer, fragDrive, "DriveFragment");
@@ -151,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
     //Overriding onOptionsItemSelected to perform event on menu items
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        ////Toast.makeText(this, "You chose : " + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
         switch (menuItem.getItemId()) {
             case R.id.menu_first: cpf_requestBTPermissions();
                 return true;

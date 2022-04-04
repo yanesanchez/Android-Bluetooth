@@ -42,10 +42,34 @@ public class DriveFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentDriveBinding.inflate(inflater, container, false);
-        // TODO Add button & seekbar listeners
-
         binding.vvSeekBar1.setOnSeekBarChangeListener(this);
         binding.vvSeekBar2.setOnSeekBarChangeListener(this);
+
+        // TODO DIRECTION BUTTONS
+        binding.vvBtnFORWARD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        binding.vvBtnBACK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        binding.vvBtnLEFT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        binding.vvBtnRIGHT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         return binding.getRoot();
     }
