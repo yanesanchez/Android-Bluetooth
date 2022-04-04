@@ -15,7 +15,7 @@
 
     <string name="first">First Selected</string>
 
-    <string name="statusLabel">Device is not connected.</string>
+    <string name="statusLabel">Device is connected.</string>
 
 
 </resources>

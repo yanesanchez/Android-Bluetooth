@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
         setContentView(view);
 
         // Need grant permission once per install
-        cpf_checkBTPermissions();
+        //cpf_checkBTPermissions();
 
         // +++
         // Create fragments for Drive & Connect

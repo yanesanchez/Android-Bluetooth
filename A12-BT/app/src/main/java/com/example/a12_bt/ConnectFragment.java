@@ -73,12 +73,14 @@ public class ConnectFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentConnectBinding.inflate(inflater, container, false);
+        // TODO add button listeners
+        
+
         return binding.getRoot();
     }
-    // TODO add button listeners
+
 
     // BLUETOOTH ===============================
-    // TODO change "Context" parameter to correct context
 
     private void cpf_checkBTPermissions() {
         if (ContextCompat.checkSelfPermission(mainActivity,
