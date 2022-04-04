@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -25,10 +26,9 @@ import java.io.OutputStream;
 
 import com.example.a12_bt.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FragmentDataPassListener {
     private ActivityMainBinding binding;
 
-    //// HERE
     // Data stream to/from NXT bluetooth
     private InputStream cv_is = null;
     private OutputStream cv_os = null;
@@ -39,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
     private Set<BluetoothDevice> cv_pairedDevices = null;
     private BluetoothDevice cv_btDevice = null;
     private BluetoothSocket cv_btSocket = null;
+
+    // Fragment Variables
+    DriveFragment fragDrive;
+    ConnectFragment fragConnect;
 
     /* onCreate START --------------------------------------- */
     @Override
@@ -53,7 +57,13 @@ public class MainActivity extends AppCompatActivity {
         // Need grant permission once per install
         cpf_checkBTPermissions();
 
+        // +++
+        // Create fragments for Drive & Connect
+        fragDrive = new DriveFragment();
+        fragConnect = new ConnectFragment();
+
         ////Button button = (Button)findViewById(R.id.button);
+        /*
         binding.button.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -71,10 +81,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+         */
+
     }
     /* onCreate END --------------------------------------- */
 
-    // Overriding onCreateOptionMenu() to make Option menu
+    // MENU OPTIONS ==================
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //Inflating menu by overriding inflate() method of MenuInflater class.
@@ -104,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    // ******** MOVED TO CONNECT-FRAGMENT
     // --- MENU OPTION 2
     // Modify from chap14, pp390 findRobot()
     private BluetoothDevice cpf_locateInPairedBTList(String name) {
@@ -115,18 +129,19 @@ public class MainActivity extends AppCompatActivity {
             while (lv_it.hasNext())  {
                 lv_bd = lv_it.next();
                 if (lv_bd.getName().equalsIgnoreCase(name)) {
-                    binding.vvTvOut1.setText(name + " is in paired list");
+                    //binding.vvTvOut1.setText(name + " is in paired list");
                     return lv_bd;
                 }
             }
-            binding.vvTvOut1.setText(name + " is NOT in paired list");
+           // binding.vvTvOut1.setText(name + " is NOT in paired list");
         }
         catch (Exception e) {
-            binding.vvTvOut1.setText("Failed in findRobot() " + e.getMessage());
+           // binding.vvTvOut1.setText("Failed in findRobot() " + e.getMessage());
         }
         return null;
     }
 
+    // ******** MOVED TO CONNECT-FRAGMENT
     // --- MENU OPTION 3
     // Modify from chap14, pp391 connectToRobot()
     private void cpf_connectToEV3(BluetoothDevice bd) {
@@ -134,25 +149,26 @@ public class MainActivity extends AppCompatActivity {
             cv_btSocket = bd.createRfcommSocketToServiceRecord
                     (UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
             cv_btSocket.connect();
-            binding.vvTvOut2.setText("Connect to " + bd.getName() + " at " + bd.getAddress());
+           // binding.vvTvOut2.setText("Connect to " + bd.getName() + " at " + bd.getAddress());
         }
         catch (Exception e) {
-            binding.vvTvOut2.setText("Error interacting with remote device [" +
-                    e.getMessage() + "]");
+           // binding.vvTvOut2.setText("Error interacting with remote device [" + e.getMessage() + "]");
         }
     }
 
+    // ******** MOVED TO CONNECT-FRAGMENT
     // --- MENU OPTION 6
     private void cpf_disconnFromEV3(BluetoothDevice bd) {
         try {
             cv_btSocket.close();
             cv_is.close();
             cv_os.close();
-            binding.vvTvOut2.setText(bd.getName() + " is disconnect " );
+           // binding.vvTvOut2.setText(bd.getName() + " is disconnect " );
         } catch (Exception e) {
-            binding.vvTvOut2.setText("Error in disconnect -> " + e.getMessage());
+            //binding.vvTvOut2.setText("Error in disconnect -> " + e.getMessage());
         }
     }
+    //-------------------------------------
 
     // --- MENU OPTION 4
     // Communication Developer Kit Page 27
@@ -196,7 +212,8 @@ public class MainActivity extends AppCompatActivity {
             cv_os.flush();
         }
         catch (Exception e) {
-            binding.vvTvOut1.setText("Error in MoveForward(" + e.getMessage() + ")");
+            // TODO add error to new textView
+           // binding.vvTvOut1.setText("Error in MoveForward(" + e.getMessage() + ")");
         }
     }
 
@@ -238,28 +255,31 @@ public class MainActivity extends AppCompatActivity {
             cv_os.flush();
         }
         catch (Exception e) {
-            binding.vvTvOut1.setText("Error in PlayTone(" + e.getMessage() + ")");
+            // TODO add error to new text view
+            //binding.vvTvOut1.setText("Error in PlayTone(" + e.getMessage() + ")");
         }
     }
 
+    // ******** MOVED TO CONNECT-FRAGMENT
     // BLUETOOTH ===============================
     private void cpf_checkBTPermissions() {
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED) {
-            binding.vvTvOut1.setText("BLUETOOTH_SCAN already granted.\n");
+            //binding.vvTvOut1.setText("BLUETOOTH_SCAN already granted.\n");
         }
         else {
-            binding.vvTvOut1.setText("BLUETOOTH_SCAN NOT granted.\n");
+           // binding.vvTvOut1.setText("BLUETOOTH_SCAN NOT granted.\n");
         }
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
-            binding.vvTvOut2.setText("BLUETOOTH_CONNECT NOT granted.\n");
+           // binding.vvTvOut2.setText("BLUETOOTH_CONNECT NOT granted.\n");
         }
         else {
-            binding.vvTvOut2.setText("BLUETOOTH_CONNECT already granted.\n");
+            //binding.vvTvOut2.setText("BLUETOOTH_CONNECT already granted.\n");
         }
     }
 
+    // ******** MOVED TO CONNECT-FRAGMENT
     // --- MENU OPTION 1
     // https://www.geeksforgeeks.org/android-how-to-request-permissions-in-android-application/
     private void cpf_requestBTPermissions() {
@@ -288,5 +308,40 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this,
                     "BLUETOOTH_CONNECT already granted", Toast.LENGTH_SHORT) .show();
         }
+    }
+
+    // FRAGMENT METHODS =============
+
+    public static void loadFragment(AppCompatActivity activity, int containerId, Fragment fragment, String tag) {
+        activity.getSupportFragmentManager().beginTransaction().
+                replace(containerId, fragment, tag).commitAllowingStateLoss();
+    }
+
+    public void setContentFragment(int id) {
+        switch (id) {
+            case 1:
+                loadFragment(this, R.id.vv_fragmentContainer, fragDrive, "DriveFragment");
+                break;
+            case 2:
+                loadFragment(this, R.id.vv_fragmentContainer, fragConnect, "ConnectFragment");
+                break;
+        }
+    }
+
+    @Override
+    public void cf_firedByFragment(String str, int source) {
+        switch (source) {
+            case 1:
+                setContentFragment(1);
+                getSupportFragmentManager().executePendingTransactions();
+                //fragDrive
+                break;
+            case 2:
+                setContentFragment(2);
+                getSupportFragmentManager().executePendingTransactions();
+                //fragConnect
+                break;
+        }
+
     }
 }
