@@ -14,9 +14,8 @@
     <string name="menu_sixth">6. Disconnect from EV3</string>
 
     <string name="first">First Selected</string>
-    <string name="second">Second Selected</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="statusLabel">Device is not connected.</string>
 
 
 </resources>

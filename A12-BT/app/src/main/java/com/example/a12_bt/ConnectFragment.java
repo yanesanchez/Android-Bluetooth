@@ -25,12 +25,7 @@ import java.util.UUID;
 
 import com.example.a12_bt.databinding.FragmentConnectBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ConnectFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ConnectFragment extends Fragment implements FragmentDataPassListener {
+public class ConnectFragment extends Fragment {
     private FragmentConnectBinding binding;
     private FragmentDataPassListener cv_listener;
 
@@ -45,37 +40,9 @@ public class ConnectFragment extends Fragment implements FragmentDataPassListene
     private BluetoothDevice cv_btDevice = null;
     private BluetoothSocket cv_btSocket = null;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public ConnectFragment() {
         // Required empty public constructor
-    }
-
-
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ConnectFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ConnectFragment newInstance(String param1, String param2) {
-        ConnectFragment fragment = new ConnectFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     // assign cv_listener to MainActivity (which implements MyFragmentDataPassListener)
@@ -92,10 +59,7 @@ public class ConnectFragment extends Fragment implements FragmentDataPassListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -105,6 +69,7 @@ public class ConnectFragment extends Fragment implements FragmentDataPassListene
         binding = FragmentConnectBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+    // TODO add button listeners
 
     // BLUETOOTH ===============================
     // TODO change "Context" parameter to correct context
@@ -208,8 +173,4 @@ public class ConnectFragment extends Fragment implements FragmentDataPassListene
         }
     }
 
-    @Override
-    public void cf_firedByFragment(String str, int source) {
-
-    }
 }

@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.example.a12_bt.databinding.ActivityMainBinding;
+import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity implements FragmentDataPassListener {
     private ActivityMainBinding binding;
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
     DriveFragment fragDrive;
     ConnectFragment fragConnect;
 
+    private TabLayout cv_tabBar;
+
     /* onCreate START --------------------------------------- */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,23 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
         // Create fragments for Drive & Connect
         fragDrive = new DriveFragment();
         fragConnect = new ConnectFragment();
+
+        cv_tabBar = binding.tabLayout;
+
+        // tab sync (2a) : tablayout.addOnTabSelectedListener -- tab changes page
+        cv_tabBar.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                //viewPager2.setCurrentItem(tab.getPosition());
+                setContentFragment(tab.getPosition());
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
 
         ////Button button = (Button)findViewById(R.id.button);
         /*
@@ -85,6 +105,40 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
 
     }
     /* onCreate END --------------------------------------- */
+
+    // FRAGMENT METHODS =============
+    public static void loadFragment(AppCompatActivity activity, int containerId, Fragment fragment, String tag) {
+        activity.getSupportFragmentManager().beginTransaction().
+                replace(containerId, fragment, tag).commitAllowingStateLoss();
+    }
+
+    public void setContentFragment(int id) {
+        switch (id) {
+            case 0:
+                loadFragment(this, R.id.vv_fragmentContainer, fragDrive, "DriveFragment");
+                break;
+            case 3:
+                loadFragment(this, R.id.vv_fragmentContainer, fragConnect, "ConnectFragment");
+                break;
+        }
+    }
+
+    @Override
+    public void cf_firedByFragment(String str, int source) {
+        switch (source) {
+            case 1:
+                setContentFragment(1);
+                getSupportFragmentManager().executePendingTransactions();
+                //fragDrive
+                break;
+            case 2:
+                setContentFragment(2);
+                getSupportFragmentManager().executePendingTransactions();
+                //fragConnect
+                break;
+        }
+
+    }
 
     // MENU OPTIONS ==================
     @Override
@@ -116,59 +170,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
         }
     }
 
-
-    // ******** MOVED TO CONNECT-FRAGMENT
-    // --- MENU OPTION 2
-    // Modify from chap14, pp390 findRobot()
-    private BluetoothDevice cpf_locateInPairedBTList(String name) {
-        BluetoothDevice lv_bd = null;
-        try {
-            cv_btInterface = BluetoothAdapter.getDefaultAdapter();
-            cv_pairedDevices = cv_btInterface.getBondedDevices();
-            Iterator<BluetoothDevice> lv_it = cv_pairedDevices.iterator();
-            while (lv_it.hasNext())  {
-                lv_bd = lv_it.next();
-                if (lv_bd.getName().equalsIgnoreCase(name)) {
-                    //binding.vvTvOut1.setText(name + " is in paired list");
-                    return lv_bd;
-                }
-            }
-           // binding.vvTvOut1.setText(name + " is NOT in paired list");
-        }
-        catch (Exception e) {
-           // binding.vvTvOut1.setText("Failed in findRobot() " + e.getMessage());
-        }
-        return null;
-    }
-
-    // ******** MOVED TO CONNECT-FRAGMENT
-    // --- MENU OPTION 3
-    // Modify from chap14, pp391 connectToRobot()
-    private void cpf_connectToEV3(BluetoothDevice bd) {
-        try  {
-            cv_btSocket = bd.createRfcommSocketToServiceRecord
-                    (UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
-            cv_btSocket.connect();
-           // binding.vvTvOut2.setText("Connect to " + bd.getName() + " at " + bd.getAddress());
-        }
-        catch (Exception e) {
-           // binding.vvTvOut2.setText("Error interacting with remote device [" + e.getMessage() + "]");
-        }
-    }
-
-    // ******** MOVED TO CONNECT-FRAGMENT
-    // --- MENU OPTION 6
-    private void cpf_disconnFromEV3(BluetoothDevice bd) {
-        try {
-            cv_btSocket.close();
-            cv_is.close();
-            cv_os.close();
-           // binding.vvTvOut2.setText(bd.getName() + " is disconnect " );
-        } catch (Exception e) {
-            //binding.vvTvOut2.setText("Error in disconnect -> " + e.getMessage());
-        }
-    }
-    //-------------------------------------
 
     // --- MENU OPTION 4
     // Communication Developer Kit Page 27
@@ -279,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
         }
     }
 
-    // ******** MOVED TO CONNECT-FRAGMENT
+    // ALL MOVED TO CONNECT-FRAGMENT ===============
     // --- MENU OPTION 1
     // https://www.geeksforgeeks.org/android-how-to-request-permissions-in-android-application/
     private void cpf_requestBTPermissions() {
@@ -309,39 +310,58 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
                     "BLUETOOTH_CONNECT already granted", Toast.LENGTH_SHORT) .show();
         }
     }
-
-    // FRAGMENT METHODS =============
-
-    public static void loadFragment(AppCompatActivity activity, int containerId, Fragment fragment, String tag) {
-        activity.getSupportFragmentManager().beginTransaction().
-                replace(containerId, fragment, tag).commitAllowingStateLoss();
+    // ******** MOVED TO CONNECT-FRAGMENT
+    // --- MENU OPTION 2
+    // Modify from chap14, pp390 findRobot()
+    private BluetoothDevice cpf_locateInPairedBTList(String name) {
+        BluetoothDevice lv_bd = null;
+        try {
+            cv_btInterface = BluetoothAdapter.getDefaultAdapter();
+            cv_pairedDevices = cv_btInterface.getBondedDevices();
+            Iterator<BluetoothDevice> lv_it = cv_pairedDevices.iterator();
+            while (lv_it.hasNext())  {
+                lv_bd = lv_it.next();
+                if (lv_bd.getName().equalsIgnoreCase(name)) {
+                    //binding.vvTvOut1.setText(name + " is in paired list");
+                    return lv_bd;
+                }
+            }
+            // binding.vvTvOut1.setText(name + " is NOT in paired list");
+        }
+        catch (Exception e) {
+            // binding.vvTvOut1.setText("Failed in findRobot() " + e.getMessage());
+        }
+        return null;
     }
 
-    public void setContentFragment(int id) {
-        switch (id) {
-            case 1:
-                loadFragment(this, R.id.vv_fragmentContainer, fragDrive, "DriveFragment");
-                break;
-            case 2:
-                loadFragment(this, R.id.vv_fragmentContainer, fragConnect, "ConnectFragment");
-                break;
+    // ******** MOVED TO CONNECT-FRAGMENT
+    // --- MENU OPTION 3
+    // Modify from chap14, pp391 connectToRobot()
+    private void cpf_connectToEV3(BluetoothDevice bd) {
+        try  {
+            cv_btSocket = bd.createRfcommSocketToServiceRecord
+                    (UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
+            cv_btSocket.connect();
+            // binding.vvTvOut2.setText("Connect to " + bd.getName() + " at " + bd.getAddress());
+        }
+        catch (Exception e) {
+            // binding.vvTvOut2.setText("Error interacting with remote device [" + e.getMessage() + "]");
         }
     }
 
-    @Override
-    public void cf_firedByFragment(String str, int source) {
-        switch (source) {
-            case 1:
-                setContentFragment(1);
-                getSupportFragmentManager().executePendingTransactions();
-                //fragDrive
-                break;
-            case 2:
-                setContentFragment(2);
-                getSupportFragmentManager().executePendingTransactions();
-                //fragConnect
-                break;
+    // ******** MOVED TO CONNECT-FRAGMENT
+    // --- MENU OPTION 6
+    private void cpf_disconnFromEV3(BluetoothDevice bd) {
+        try {
+            cv_btSocket.close();
+            cv_is.close();
+            cv_os.close();
+            // binding.vvTvOut2.setText(bd.getName() + " is disconnect " );
+        } catch (Exception e) {
+            //binding.vvTvOut2.setText("Error in disconnect -> " + e.getMessage());
         }
-
     }
+    //-------------------------------------
+
+
 }
