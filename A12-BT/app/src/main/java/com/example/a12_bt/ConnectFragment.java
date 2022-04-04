@@ -74,7 +74,22 @@ public class ConnectFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentConnectBinding.inflate(inflater, container, false);
         // TODO add button listeners
-        
+        binding.vvBtnConnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cpf_checkBTPermissions();
+                cpf_requestBTPermissions();
+                cv_btDevice = cpf_locateInPairedBTList(CV_ROBOTNAME);
+                cpf_connectToEV3(cv_btDevice);
+            }
+        });
+        binding.vvBtnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cpf_disconnFromEV3(cv_btDevice);
+            }
+        });
+
 
         return binding.getRoot();
     }
@@ -105,8 +120,6 @@ public class ConnectFragment extends Fragment {
         // We can give any value but unique for each permission.
         final int BLUETOOTH_SCAN_CODE = 100;
         final int BLUETOOTH_CONNECT_CODE = 101;
-
-        Context context = binding.getRoot().getContext();
 
 
         if (ContextCompat.checkSelfPermission(binding.getRoot().getContext(),
@@ -152,7 +165,8 @@ public class ConnectFragment extends Fragment {
             binding.vvTvOut1.setText(name + " is NOT in paired list");
         }
         catch (Exception e) {
-            binding.vvTvOut1.setText("Failed in findRobot() " + e.getMessage());
+            //binding.vvTvOut1.setText("Failed in findRobot() " + e.getMessage());
+            binding.vvTvOut1.setText("Not Connected");
         }
         return null;
     }
