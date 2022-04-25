@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
@@ -36,11 +37,12 @@ public class ConnectFragment extends Fragment {
     private OutputStream cv_os = null;
 
     // BT Variables
-    private final String CV_ROBOTNAME = "EV3A";
+    private final String CV_ROBOTNAME = "W";
     private BluetoothAdapter cv_btInterface = null;
     private Set<BluetoothDevice> cv_pairedDevices = null;
     private BluetoothDevice cv_btDevice = null;
     private BluetoothSocket cv_btSocket = null;
+    private boolean isConnected = false;
 
 
     public ConnectFragment() {
@@ -176,9 +178,13 @@ public class ConnectFragment extends Fragment {
                     (UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
             cv_btSocket.connect();
             binding.vvTvOut2.setText("Connect to " + bd.getName() + " at " + bd.getAddress());
+            binding.vvBluetoothIcon.setImageResource(R.drawable.bluetooth_icon);
+            isConnected = true;
         }
         catch (Exception e) {
             binding.vvTvOut2.setText("Error interacting with remote device [" + e.getMessage() + "]");
+            binding.vvBluetoothIcon.setImageResource(R.drawable.bluetooth_icon_gray);
+            isConnected = false;
         }
     }
 
@@ -189,8 +195,10 @@ public class ConnectFragment extends Fragment {
             cv_is.close();
             cv_os.close();
             binding.vvTvOut2.setText(bd.getName() + " is disconnect " );
+            isConnected = false;
         } catch (Exception e) {
             binding.vvTvOut2.setText("Error in disconnect -> " + e.getMessage());
+            isConnected = true;
         }
     }
 

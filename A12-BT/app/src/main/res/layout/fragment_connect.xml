@@ -81,13 +81,15 @@
         android:id="@+id/vv_bluetoothIcon"
         android:layout_width="98dp"
         android:layout_height="97dp"
+        android:clickable="false"
         android:src="@drawable/bluetooth_icon_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.051"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.209" />
+        app:layout_constraintVertical_bias="0.209"
+        app:tint="@color/logoBTOff" />
 
     <TextView
         android:id="@+id/vv_tvDeviceName"

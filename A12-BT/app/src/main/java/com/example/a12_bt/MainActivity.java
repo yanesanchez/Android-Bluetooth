@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
     private OutputStream cv_os = null;
 
     // BT Variables
-    private final String CV_ROBOTNAME = "EV3A";
+    private final String CV_ROBOTNAME = "W";
     private BluetoothAdapter cv_btInterface = null;
     private Set<BluetoothDevice> cv_pairedDevices = null;
     private BluetoothDevice cv_btDevice = null;
