@@ -41,9 +41,9 @@ public class ConnectFragment extends Fragment {
     private BluetoothAdapter cv_btInterface = null;
     private Set<BluetoothDevice> cv_pairedDevices = null;
     private BluetoothDevice cv_btDevice = null;
-    private BluetoothSocket cv_btSocket = null;
-    static boolean isConnected = false;
-    static boolean isPowerOn = false;
+    private static BluetoothSocket cv_btSocket = null;
+
+    Context context;
 
 
     public ConnectFragment() {
@@ -59,6 +59,7 @@ public class ConnectFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof FragmentDataPassListener) {
+            this.context = context;
             cv_listener = (FragmentDataPassListener) context;
         } else {
             throw new ClassCastException(context.toString() + " must FragmentDataPassListener");
@@ -79,10 +80,12 @@ public class ConnectFragment extends Fragment {
         binding.vvBtnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cpf_checkBTPermissions();
+                cf_connectionStatus();
+                /*cpf_checkBTPermissions();
                 cpf_requestBTPermissions();
                 cv_btDevice = cpf_locateInPairedBTList(CV_ROBOTNAME);
                 cpf_connectToEV3(cv_btDevice);
+                */
             }
         });
         binding.vvBtnClose.setOnClickListener(new View.OnClickListener() {
@@ -97,12 +100,24 @@ public class ConnectFragment extends Fragment {
                 cpf_EV3Power();
             }
         });
+        binding.vvTvBatteryLevel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cpf_batteryLevel();
+                //binding.vvBarBattery.setProgress();
+            }
+        });
 
         return binding.getRoot();
     }
 
 
     // BLUETOOTH ===============================
+
+    public void cf_connectionStatus() {
+        //Toast.makeText(context, "Connection Status: " + cv_btSocket.isConnected() + "", Toast.LENGTH_SHORT).show();
+        binding.vvTvConnectStatus.setText("Connected: " + MainActivity.isConnected);
+    };
 
     private void cpf_checkBTPermissions() {
         if (ContextCompat.checkSelfPermission(mainActivity,
@@ -172,7 +187,7 @@ public class ConnectFragment extends Fragment {
         }
         catch (Exception e) {
             //binding.vvTvOut1.setText("Failed in findRobot() " + e.getMessage());
-            binding.vvTvConnectStatus.setText("Not Connected");
+            binding.vvTvConnectStatus.setText("Failed in findRobot() " + e.getMessage());
         }
         return null;
     }
@@ -181,19 +196,24 @@ public class ConnectFragment extends Fragment {
     // Modify from chap14, pp391 connectToRobot()
     private void cpf_connectToEV3(BluetoothDevice bd) {
         try  {
-            cv_btSocket = bd.createRfcommSocketToServiceRecord
-                    (UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
-            cv_btSocket.connect();
-            binding.vvTvOut2.setText("Connected to " + bd.getName() + " at " + bd.getAddress());
-            binding.vvBluetoothIcon.setImageResource(R.drawable.bluetooth_icon);
-            binding.tvPowerStatus.setText(R.string.powerStatusLabelOn);
-            isPowerOn = true;
-            isConnected = true;
+            /*if (MainActivity.isConnected == false && cpf_locateInPairedBTList(CV_ROBOTNAME) == null) {
+                cv_btSocket = bd.createRfcommSocketToServiceRecord
+                        (UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
+                cv_btSocket.connect();
+            }*/
+            if (MainActivity.isConnected == true){
+                binding.vvTvOut2.setText("Connected to " + bd.getName() + " at " + bd.getAddress());
+                binding.vvBluetoothIcon.setImageResource(R.drawable.bluetooth_icon_green);
+                binding.tvPowerStatus.setText(R.string.powerStatusLabelOn);
+            }
+
+            //MainActivity.isPowerOn = true;
+            //MainActivity.isConnected = true;
         }
         catch (Exception e) {
             binding.vvTvOut2.setText("Error interacting with remote device [" + e.getMessage() + "]");
             binding.vvBluetoothIcon.setImageResource(R.drawable.bluetooth_icon_gray);
-            isConnected = false;
+            MainActivity.isConnected = false;
         }
     }
 
@@ -204,10 +224,9 @@ public class ConnectFragment extends Fragment {
             cv_is.close();
             cv_os.close();
             binding.vvTvOut2.setText(bd.getName() + " is disconnect " );
-            isConnected = false;
+            MainActivity.isConnected = false;
         } catch (Exception e) {
             binding.vvTvOut2.setText("Error in disconnect -> " + e.getMessage());
-            isConnected = true;
         }
     }
 
@@ -244,8 +263,39 @@ public class ConnectFragment extends Fragment {
             cv_os.flush();
         }
         catch (Exception e) {
-            // TODO add error to new textView
             binding.tvPowerStatus.setText("Error in PowerOn(" + e.getMessage() + ")");
+        }
+    }
+
+    /* Battery Level */
+    public void cpf_batteryLevel() {
+        try {
+            binding.tvPowerStatus.setText("System Power: ON");
+            byte[] buffer = new byte[10];       // command length
+
+            buffer[0] = (byte) (10-2);
+            buffer[1] = 0;
+
+            buffer[2] = 34;     // message counter
+            buffer[3] = 12;
+
+            buffer[4] = (byte) 0x01; // command type; direct command, require reply
+
+            buffer[5] = 0;      // header alloc
+            buffer[6] = 0;
+
+            // Firmware Developer Kit, pg 64
+            // opUI_Read(CMD,... )
+            buffer[7] = (byte) 0x81;    // --- Op Code
+            buffer[8] = (byte) 0x12;              // CMD: GET_LBATT = 0x12
+            buffer[9] = 0;              // hold result
+            binding.vvBarBattery.setProgress((byte) buffer[9]);
+
+            cv_os.write(buffer);
+            cv_os.flush();
+        }
+        catch (Exception e) {
+            binding.vvTvOut2.setText("Error in PowerOn(" + e.getMessage() + ")");
         }
     }
 
