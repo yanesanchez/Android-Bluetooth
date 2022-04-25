@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
     ConnectFragment fragConnect;
     SoundFragment fragSound;
 
+
     private TabLayout cv_tabBar;
 
     /* onCreate START --------------------------------------- */
@@ -97,6 +98,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
                 loadFragment(this, R.id.vv_fragmentContainer, fragDrive, "DriveFragment");
                 break;
             case 1:
+                loadFragment(this, R.id.vv_fragmentContainer, fragSound, "SoundFragment");
+                break;
+            case 2:
                 loadFragment(this, R.id.vv_fragmentContainer, fragSound, "SoundFragment");
                 break;
             case 3:

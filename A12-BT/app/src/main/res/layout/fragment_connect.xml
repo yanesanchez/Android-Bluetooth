@@ -107,7 +107,7 @@
         app:layout_constraintVertical_bias="0.038" />
 
     <Button
-        android:id="@+id/btnPower"
+        android:id="@+id/vv_btnPower"
         android:layout_width="90sp"
         android:layout_height="90sp"
         android:fontFamily="@font/font_90_icons"

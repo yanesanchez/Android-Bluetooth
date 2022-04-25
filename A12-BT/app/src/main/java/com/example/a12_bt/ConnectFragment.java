@@ -43,6 +43,7 @@ public class ConnectFragment extends Fragment {
     private BluetoothDevice cv_btDevice = null;
     private BluetoothSocket cv_btSocket = null;
     static boolean isConnected = false;
+    static boolean isPowerOn = false;
 
 
     public ConnectFragment() {
@@ -88,6 +89,12 @@ public class ConnectFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 cpf_disconnFromEV3(cv_btDevice);
+            }
+        });
+        binding.vvBtnPower.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cpf_EV3Power();
             }
         });
 
@@ -199,6 +206,40 @@ public class ConnectFragment extends Fragment {
         } catch (Exception e) {
             binding.vvTvOut2.setText("Error in disconnect -> " + e.getMessage());
             isConnected = true;
+        }
+    }
+
+    /* Power on */
+    public void cpf_EV3Power() {
+        try {
+            binding.tvPowerStatus.setText("System Power: ON");
+            byte[] buffer = new byte[11];       // command length
+
+            buffer[0] = (byte) (11-2);
+            buffer[1] = 0;
+
+            buffer[2] = 34;     // message counter
+            buffer[3] = 12;
+
+            buffer[4] = (byte) 0x01; // command type; direct command, require reply
+
+            buffer[5] = 0;      // header alloc
+            buffer[6] = 0;
+
+            // Firmware Developer Kit, pg 64
+            // opCom_Get(CMD,... )
+            buffer[7] = (byte) 0xD3;    // --- Op Code
+            buffer[8] = 0;
+            // arguments
+            buffer[9] = (byte) 0x01;    // CMD: GET_ON_OF
+            buffer[10] = 0;             // to hold return
+
+            cv_os.write(buffer);
+            cv_os.flush();
+        }
+        catch (Exception e) {
+            // TODO add error to new textView
+            binding.tvPowerStatus.setText("Error in PowerOn(" + e.getMessage() + ")");
         }
     }
 
