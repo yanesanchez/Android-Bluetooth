@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
     private ActivityMainBinding binding;
 
     // Data stream to/from NXT bluetooth
-    private InputStream cv_is = null;
-    private OutputStream cv_os = null;
+    //private InputStream cv_is = null;
+    //private OutputStream cv_os = null;
 
     // BT Variables
     private final String CV_ROBOTNAME = "W";
@@ -129,17 +129,17 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.menu_first: cpf_requestBTPermissions();
+            case R.id.menu_first: /*cpf_requestBTPermissions();*/
                 return true;
-            case R.id.menu_second: cv_btDevice = cpf_locateInPairedBTList(CV_ROBOTNAME);
+            case R.id.menu_second: /*cv_btDevice = cpf_locateInPairedBTList(CV_ROBOTNAME);*/
                 return true;
-            case R.id.menu_third: cpf_connectToEV3(cv_btDevice);
+            case R.id.menu_third: /*cpf_connectToEV3(cv_btDevice);*/
                 return true;
-            case R.id.menu_fourth: cpf_EV3MoveMotor();
+            case R.id.menu_fourth: /*cpf_EV3MoveMotor();*/
                 return true;
-            case R.id.menu_fifth: cpf_EV3PlayTone();
+            case R.id.menu_fifth: /*cpf_EV3PlayTone();*/
                 return true;
-            case R.id.menu_sixth: cpf_disconnFromEV3(cv_btDevice);
+            case R.id.menu_sixth: /*cpf_disconnFromEV3(cv_btDevice);*/
                 return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
     // --- MENU OPTION 4
     // Communication Developer Kit Page 27
     // 4.2.2 Start motor B & C forward at power 50 for 3 rotation and braking at destination
-    private void cpf_EV3MoveMotor() {
+    /*private void cpf_EV3MoveMotor() {
         try {
             byte[] buffer = new byte[20];       // 0x12 command length
 
@@ -192,10 +192,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
             // TODO add error to new textView
            // binding.vvTvOut1.setText("Error in MoveForward(" + e.getMessage() + ")");
         }
-    }
+    } */// moved to DriveFragment
 
     // --- MENU OPTION 5
     // 4.2.5 Play a 1Kz tone at level 2 for 1 sec.
+    /*
     private void cpf_EV3PlayTone() {
         // +++
         try {
@@ -235,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
             // TODO add error to new text view
             //binding.vvTvOut1.setText("Error in PlayTone(" + e.getMessage() + ")");
         }
-    }
+    }*/
 
     // ******** MOVED TO CONNECT-FRAGMENT
     // BLUETOOTH ===============================
@@ -313,6 +314,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
     // ******** MOVED TO CONNECT-FRAGMENT
     // --- MENU OPTION 3
     // Modify from chap14, pp391 connectToRobot()
+    /*
     private void cpf_connectToEV3(BluetoothDevice bd) {
         try  {
             cv_btSocket = bd.createRfcommSocketToServiceRecord
@@ -325,8 +327,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
         }
     }
 
+     */
+
     // ******** MOVED TO CONNECT-FRAGMENT
     // --- MENU OPTION 6
+    /*
     private void cpf_disconnFromEV3(BluetoothDevice bd) {
         try {
             cv_btSocket.close();
@@ -337,6 +342,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
             //binding.vvTvOut2.setText("Error in disconnect -> " + e.getMessage());
         }
     }
+
+     */
     //-------------------------------------
 
 

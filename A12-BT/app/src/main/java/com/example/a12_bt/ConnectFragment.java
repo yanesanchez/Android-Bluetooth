@@ -42,7 +42,7 @@ public class ConnectFragment extends Fragment {
     private Set<BluetoothDevice> cv_pairedDevices = null;
     private BluetoothDevice cv_btDevice = null;
     private BluetoothSocket cv_btSocket = null;
-    private boolean isConnected = false;
+    static boolean isConnected = false;
 
 
     public ConnectFragment() {

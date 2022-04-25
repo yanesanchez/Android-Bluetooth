@@ -24,4 +24,10 @@
     <string name="tabItem4">Connect</string>
 
 
+    <!-- Drive Status Labels -->
+    <string name="moveForward">Moving FORWARD</string>
+    <string name="moveBackwards">Moving BACKWARDS</string>
+    <string name="moveLeft">Moving LEFT</string>
+    <string name="moveRight">Moving RIGHT</string>
+
 </resources>
