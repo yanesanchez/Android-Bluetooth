@@ -121,7 +121,7 @@
         app:layout_constraintVertical_bias="0.429" />
 
     <TextView
-        android:id="@+id/tvPowerStatus"
+        android:id="@+id/tv_PowerStatus"
         android:layout_width="150dp"
         android:layout_height="35dp"
         android:text="System: OFF"

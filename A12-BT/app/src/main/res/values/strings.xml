@@ -39,4 +39,8 @@
     <string name="leftArrow"></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="sensorLightButton1">Port 1\nas Color</string>
+    <string name="sensorLightButton2">Port 3\nValue</string>
+
 </resources>

@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
     // Fragment Variables
     DriveFragment fragDrive;
     ConnectFragment fragConnect;
+    SensorFragment fragSensor;
     SoundFragment fragSound;
 
 
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
         // Create fragments for Drive & Connect
         fragDrive = new DriveFragment();
         fragConnect = new ConnectFragment(MainActivity.this);
+        fragSensor = new SensorFragment();
         fragSound = new SoundFragment();
 
         cv_tabBar = binding.tabLayout;
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
                 loadFragment(this, R.id.vv_fragmentContainer, fragSound, "SoundFragment");
                 break;
             case 2:
-                loadFragment(this, R.id.vv_fragmentContainer, fragSound, "SoundFragment");
+                loadFragment(this, R.id.vv_fragmentContainer, fragSensor, "SensorFragment");
                 break;
             case 3:
                 loadFragment(this, R.id.vv_fragmentContainer, fragConnect, "ConnectFragment");
