@@ -47,11 +47,11 @@ public class DriveFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentDriveBinding.inflate(inflater, container, false);
         binding.vvSeekBar1.setOnSeekBarChangeListener(this);
         binding.vvSeekBar2.setOnSeekBarChangeListener(this);
 
+        /* Drive Direction Arrows ----------- */
         binding.vvBtnFORWARD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +74,19 @@ public class DriveFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
             @Override
             public void onClick(View view) {
                 cpf_EV3MoveMotorRIGHT();
+            }
+        });
+        /* Start & Stop buttons -------------- */
+        binding.vvBtnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cpf_EV3MotorStart();
+            }
+        });
+        binding.vvBtnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cpf_EV3MotorStop();
             }
         });
 
@@ -162,7 +175,7 @@ public class DriveFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
         try {
             binding.vvTvStatusLabel.setText(R.string.moveForward);
 
-            byte[] buffer = new byte[12];       // command length
+            byte[] buffer = new byte[20];       // command length
 
             buffer[0] = (byte) (20-2);
             buffer[1] = 0;
@@ -340,6 +353,77 @@ public class DriveFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
             binding.vvTvStatusLabel.setText("Error in MoveRight(" + e.getMessage() + ")");
         }
     }
+
+    /* Start / Play */
+    public void cpf_EV3MotorStart() {
+        try {
+            binding.vvTvStatusLabel.setText(R.string.motorStart);
+            byte[] buffer = new byte[11];       // command length
+
+            buffer[0] = (byte) (11-2);
+            buffer[1] = 0;
+
+            buffer[2] = 34;     // message counter
+            buffer[3] = 12;
+
+            buffer[4] = (byte) 0x80; // command type; direct command no reply
+
+            buffer[5] = 0;      // header alloc
+            buffer[6] = 0;
+
+            // Firmware Developer Kit, pg 54
+            // opOutput_Start (LAYER, NOS)
+            buffer[7] = (byte) 0xA6;    // --- Op Code
+            buffer[8] = 0;
+            // arguments
+            buffer[9] = (byte) 0x06;    // LAYER
+            buffer[10] = (byte) 0x81;   // NOS - Output bit field
+
+            cv_os.write(buffer);
+            cv_os.flush();
+        }
+        catch (Exception e) {
+            // TODO add error to new textView
+            binding.vvTvStatusLabel.setText("Error in MotorStart(" + e.getMessage() + ")");
+        }
+    }
+
+    /* Stop / Pause */
+    public void cpf_EV3MotorStop() {
+        try {
+            binding.vvTvStatusLabel.setText(R.string.motorStopped);
+            byte[] buffer = new byte[12];       // command length
+
+            buffer[0] = (byte) (12-2);
+            buffer[1] = 0;
+
+            buffer[2] = 34;     // message counter
+            buffer[3] = 12;
+
+            buffer[4] = (byte) 0x80; // command type; direct command no reply
+
+            buffer[5] = 0;      // header alloc
+            buffer[6] = 0;
+
+            // Firmware Developer Kit, pg 54
+            // opOutput_Stop (LAYER, NOS, BRAKE)
+            buffer[7] = (byte) 0xA3;    // --- Op Code
+            buffer[8] = 0;
+            // arguments
+            buffer[9] = (byte) 0x06;    // LAYER
+            buffer[10] = (byte) 0x81;   // NOS - Output bit field
+            buffer[11] = 1;             // BREAK - 1
+
+
+            cv_os.write(buffer);
+            cv_os.flush();
+        }
+        catch (Exception e) {
+            // TODO add error to new textView
+            binding.vvTvStatusLabel.setText("Error in MotorStop(" + e.getMessage() + ")");
+        }
+    }
+
 
 
 

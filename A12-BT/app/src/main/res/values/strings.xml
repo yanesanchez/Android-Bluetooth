@@ -29,5 +29,9 @@
     <string name="moveBackwards">Moving BACKWARDS</string>
     <string name="moveLeft">Moving LEFT</string>
     <string name="moveRight">Moving RIGHT</string>
+    <string name="motorStart">Motor STARTED</string>
+    <string name="motorStopped">Motor STOPPED</string>
 
+    <string name="forwardArrow"></string>
+    <string name="leftArrow"></string>
 </resources>
