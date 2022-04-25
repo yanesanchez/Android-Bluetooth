@@ -100,10 +100,10 @@ public class ConnectFragment extends Fragment {
     private void cpf_checkBTPermissions() {
         if (ContextCompat.checkSelfPermission(mainActivity,
                 Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED) {
-            binding.vvTvOut1.setText("BLUETOOTH_SCAN already granted.\n");
+            binding.vvTvConnectStatus.setText("BLUETOOTH_SCAN already granted.\n");
         }
         else {
-            binding.vvTvOut1.setText("BLUETOOTH_SCAN NOT granted.\n");
+            binding.vvTvConnectStatus.setText("BLUETOOTH_SCAN NOT granted.\n");
         }
         if (ContextCompat.checkSelfPermission(mainActivity,
                 Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
@@ -157,15 +157,15 @@ public class ConnectFragment extends Fragment {
             while (lv_it.hasNext())  {
                 lv_bd = lv_it.next();
                 if (lv_bd.getName().equalsIgnoreCase(name)) {
-                    binding.vvTvOut1.setText(name + " is in paired list");
+                    binding.vvTvConnectStatus.setText(name + " is in paired list");
                     return lv_bd;
                 }
             }
-            binding.vvTvOut1.setText(name + " is NOT in paired list");
+            binding.vvTvConnectStatus.setText(name + " is NOT in paired list");
         }
         catch (Exception e) {
             //binding.vvTvOut1.setText("Failed in findRobot() " + e.getMessage());
-            binding.vvTvOut1.setText("Not Connected");
+            binding.vvTvConnectStatus.setText("Not Connected");
         }
         return null;
     }
