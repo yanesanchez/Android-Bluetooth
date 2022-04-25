@@ -45,16 +45,16 @@ public class SoundFragment extends Fragment {
         binding.vvPlaySound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                cpf_EV3PlayTone();
             }
         });
-
-        return inflater.inflate(R.layout.fragment_sound, container, false);
+        
+        return binding.getRoot();
     }
 
-    // --- MENU OPTION 5
+    // --- PLAY TONE
     // 4.2.5 Play a 1Kz tone at level 2 for 1 sec.
-
+    // Communication Developer Kit, pg 30
     private void cpf_EV3PlayTone() {
         // +++
         try {
@@ -66,32 +66,28 @@ public class SoundFragment extends Fragment {
             buffer[2] = 34;
             buffer[3] = 12;
 
-            buffer[4] = (byte) 0x80;
-
+            buffer[4] = (byte) 0x80;    // command type
             buffer[5] = 0;
             buffer[6] = 0;
 
-            buffer[7] = (byte) 0x94;
-            buffer[8] = 1;
+            buffer[7] = (byte) 0x94;    // op code - opSound(CMD...)
+            buffer[8] = 1;              // CMD: TONE
 
-            buffer[9] = (byte) 0x81;
+            buffer[9] = (byte) 0x81;    // op code - opUI_Read (CMD, ...)
+            buffer[10] = 2;             // CMD: GET_IBATT = 0x02 = battery current ?
 
-            buffer[10] = 2;
-            buffer[11] = (byte) 0x82;
-
+            buffer[11] = (byte) 0x82;   // op code - opUI_WRITE (CMD, ...)
             buffer[12] = (byte) 0xE8;
-
             buffer[13] = 3;
-            buffer[14] = (byte) 0x82;
-            buffer[15] = (byte) 0xE8;
 
+            buffer[14] = (byte) 0x82;   // op code - opUI_WRITE (CMD, ...)
+            buffer[15] = (byte) 0xE8;
             buffer[16] = 3;
 
             cv_os.write(buffer);
             cv_os.flush();
         }
         catch (Exception e) {
-            // TODO add error to new text view
             binding.tvSoundStatus.setText("Error in PlayTone(" + e.getMessage() + ")");
         }
     }
