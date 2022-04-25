@@ -10,6 +10,7 @@
 
     <color name="logoBTOn">#FF094E01</color>
     <color name="logoBTOff">#FF858585</color>
+
     <color name="primary">#FF265328</color>
     <color name="primaryVariant">#FF429146</color>
     <color name="statusBar">#FF131713</color>

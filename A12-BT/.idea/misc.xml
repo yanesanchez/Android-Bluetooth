@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/layout/fragment_connect.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_display.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/fragment_drive.xml" value="0.31215250198570293" />
+        <entry key="app/src/main/res/layout/fragment_sensor.xml" value="0.3125" />
         <entry key="app/src/main/res/layout/fragment_sound.xml" value="0.25" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.3380208333333333" />
       </map>

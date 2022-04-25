@@ -4,28 +4,21 @@
     <string name="second_item">Second</string>
     <string name="third_item">Third</string>-->
 
-    <string name="button">Button</string>
-
     <string name="menu_first">1. Grant Permission</string>
     <string name="menu_second">2. Search BT List</string>
     <string name="menu_third">3. Connect to EV3</string>
     <string name="menu_fourth">4. Move Motor</string>
     <string name="menu_fifth">5. Play Tone</string>
     <string name="menu_sixth">6. Disconnect from EV3</string>
+    <string name="menu_seventh">7. Connection Status</string>
 
     <string name="first">First Selected</string>
 
-    <string name="statusLabelOff">Device is NOT connected.</string>
-    <string name="statusLabelOn">Device is connected.</string>
-
-    <string name="powerStatusLabelOff">System: OFF</string>
-    <string name="powerStatusLabelOn">System: ON</string>
-
+    <!-- Tab Items / Fragments -->
     <string name="tabItem1">Drive</string>
     <string name="tabItem2">Sound</string>
     <string name="tabItem3">Sensor</string>
     <string name="tabItem4">Connect</string>
-
 
     <!-- Drive Status Labels -->
     <string name="moveForward">Moving FORWARD</string>
@@ -35,12 +28,24 @@
     <string name="motorStart">Motor STARTED</string>
     <string name="motorStopped">Motor STOPPED</string>
 
-    <string name="forwardArrow"></string>
-    <string name="leftArrow"></string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Sound Status -->
+    <string name="playTone">Playing Tone</string>
+    <string name="stopTone">Stopping Tone</string>
+    <string name="pauseTone">Pausing Tone</string>
 
+    <string name="volumeUp">Volume Up</string>
+    <string name="volumeDown">Volume Down</string>
+
+    <!-- Sensor Status Labels -->
     <string name="sensorLightButton1">Port 1\nas Color</string>
-    <string name="sensorLightButton2">Port 3\nValue</string>
+    <string name="sensorLightButton3">Port 3\nValue</string>
+    <string name="sensorDrawDisplay">Draw on Display</string>
+
+    <!-- Connect and Power Status Labels -->
+    <string name="statusLabelOff">Device is NOT connected.</string>
+    <string name="statusLabelOn">Device is connected.</string>
+    <string name="powerStatusLabelOff">System: OFF</string>
+    <string name="powerStatusLabelOn">System: ON</string>
+    <string name="batteryLevel">Battery Level: </string>
 
 </resources>

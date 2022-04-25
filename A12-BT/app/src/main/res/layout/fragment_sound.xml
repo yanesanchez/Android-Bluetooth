@@ -52,7 +52,7 @@
         app:layout_constraintVertical_bias="0.55" />
 
     <Button
-        android:id="@+id/vv_btnRestartSound"
+        android:id="@+id/vv_btnStopSound"
         android:layout_width="110sp"
         android:layout_height="110sp"
         android:fontFamily="@font/font_90_icons"

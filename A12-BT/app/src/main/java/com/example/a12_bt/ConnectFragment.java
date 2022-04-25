@@ -68,14 +68,7 @@ public class ConnectFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentConnectBinding.inflate(inflater, container, false);
         binding.vvBtnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,12 +91,18 @@ public class ConnectFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentConnectBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
 
     // BLUETOOTH ===============================
-
+    /* CHECK BT PERMISSIONS (if running Android 12+) */
     private void cpf_checkBTPermissions() {
         if (ContextCompat.checkSelfPermission(mainActivity,
                 Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED) {
@@ -121,6 +120,7 @@ public class ConnectFragment extends Fragment {
         }
     }
 
+    /* REQUEST BT PERMISSIONS (if running Android 12+) */
     // --- MENU OPTION 1
     // https://www.geeksforgeeks.org/android-how-to-request-permissions-in-android-application/
     private void cpf_requestBTPermissions() {
@@ -152,7 +152,7 @@ public class ConnectFragment extends Fragment {
     }
 
 
-
+    /* LOCATE EV3 IN PAIRED LIST */
     // --- MENU OPTION 2
     // Modify from chap14, pp390 findRobot()
     private BluetoothDevice cpf_locateInPairedBTList(String name) {
@@ -177,6 +177,7 @@ public class ConnectFragment extends Fragment {
         return null;
     }
 
+    /* CONNECT TO EV3 */
     // --- MENU OPTION 3
     // Modify from chap14, pp391 connectToRobot()
     private void cpf_connectToEV3(BluetoothDevice bd) {
@@ -185,7 +186,8 @@ public class ConnectFragment extends Fragment {
                     (UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
             cv_btSocket.connect();
             binding.vvTvOut2.setText("Connected to " + bd.getName() + " at " + bd.getAddress());
-            binding.vvBluetoothIcon.setImageResource(R.drawable.bluetooth_icon);
+            // change BT logo when connected
+            binding.vvBluetoothIcon.setImageResource(R.drawable.bluetooth_icon_green);
             binding.tvPowerStatus.setText(R.string.powerStatusLabelOn);
             isPowerOn = true;
             isConnected = true;
@@ -197,6 +199,7 @@ public class ConnectFragment extends Fragment {
         }
     }
 
+    /* DISCONNECT FROM EV3 */
     // --- MENU OPTION 6
     private void cpf_disconnFromEV3(BluetoothDevice bd) {
         try {
@@ -211,7 +214,7 @@ public class ConnectFragment extends Fragment {
         }
     }
 
-    /* Power on */
+    /* GET POWER STATUS */
     public void cpf_EV3Power() {
         try {
             binding.tvPowerStatus.setText("System Power: ON");
@@ -244,9 +247,43 @@ public class ConnectFragment extends Fragment {
             cv_os.flush();
         }
         catch (Exception e) {
-            // TODO add error to new textView
             binding.tvPowerStatus.setText("Error in PowerOn(" + e.getMessage() + ")");
         }
     }
+
+    /* GET POWER STATUS */
+    public void cpf_levelBattery() {
+        try {
+            int batteryPercentage;
+            binding.tvPowerStatus.setText(R.string.batteryLevel);
+            byte[] buffer = new byte[12];       // command length
+
+            buffer[0] = (byte) (12-2);
+            buffer[1] = 0;
+
+            buffer[2] = 34;     // message counter
+            buffer[3] = 12;
+
+            buffer[4] = (byte) 0x01; // command type; direct command, require reply
+
+            buffer[5] = 0;      // header alloc
+            buffer[6] = 0;
+
+            // Firmware Developer Kit, pg 90
+            // opUI_Read(CMD,... )
+            buffer[7] = (byte) 0x81;    // --- Op Code
+            buffer[8] = (byte) 0x12;    // CMD: GET_LBATT = 0x12
+            buffer[9] = 0;              // hold level in percentage [0-100]
+            batteryPercentage = ((byte) buffer[9]);
+            binding.tvPowerStatus.setText(R.string.batteryLevel + "" + batteryPercentage);
+
+            cv_os.write(buffer);
+            cv_os.flush();
+        }
+        catch (Exception e) {
+            binding.tvPowerStatus.setText("Error in BatteryLevel(" + e.getMessage() + ")");
+        }
+    }
+
 
 }
