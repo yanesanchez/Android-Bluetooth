@@ -107,7 +107,6 @@ public class DriveFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
         }
         //binding.vvTvPower1.setText("Power: " + progress);
         //binding.vvTvPower2.setText("Power: " + progress);
-
     }
 
     @Override
@@ -163,7 +162,6 @@ public class DriveFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
             cv_os.flush();
         }
         catch (Exception e) {
-            // TODO add error to new textView
             binding.vvTvStatusLabel.setText("Error in Move(" + e.getMessage() + ")");
         }
     }
@@ -263,6 +261,7 @@ public class DriveFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
     public void cpf_EV3MoveMotorLEFT() {
         try {
             binding.vvTvStatusLabel.setText(R.string.moveLeft);
+            // TODO implement Move Left ----------------------
             /*
             byte[] buffer = new byte[20];       // 0x12 command length
 
@@ -310,6 +309,8 @@ public class DriveFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
     public void cpf_EV3MoveMotorRIGHT() {
         try {
             binding.vvTvStatusLabel.setText(R.string.moveRight);
+            // TODO implement Move Right ----------------------
+
             /*
             byte[] buffer = new byte[20];       // 0x12 command length
 
@@ -349,7 +350,6 @@ public class DriveFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
              */
         }
         catch (Exception e) {
-            // TODO add error to new textView
             binding.vvTvStatusLabel.setText("Error in MoveRight(" + e.getMessage() + ")");
         }
     }
@@ -383,7 +383,6 @@ public class DriveFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
             cv_os.flush();
         }
         catch (Exception e) {
-            // TODO add error to new textView
             binding.vvTvStatusLabel.setText("Error in MotorStart(" + e.getMessage() + ")");
         }
     }
@@ -419,12 +418,7 @@ public class DriveFragment extends Fragment implements SeekBar.OnSeekBarChangeLi
             cv_os.flush();
         }
         catch (Exception e) {
-            // TODO add error to new textView
             binding.vvTvStatusLabel.setText("Error in MotorStop(" + e.getMessage() + ")");
         }
     }
-
-
-
-
 }

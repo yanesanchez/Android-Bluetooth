@@ -98,7 +98,6 @@ public class SensorFragment extends Fragment {
             cv_os.flush();
         }
         catch (Exception e) {
-            // TODO add error to new textView
             binding.tvSensorStatus.setText("Error in LightSensorPort1(" + e.getMessage() + ")");
         }
     }
@@ -141,7 +140,6 @@ public class SensorFragment extends Fragment {
             cv_os.flush();
         }
         catch (Exception e) {
-            // TODO add error to new textView
             binding.tvSensorStatus.setText("Error in LightSensorPort3(" + e.getMessage() + ")");
         }
     }
