@@ -184,8 +184,10 @@ public class ConnectFragment extends Fragment {
             cv_btSocket = bd.createRfcommSocketToServiceRecord
                     (UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
             cv_btSocket.connect();
-            binding.vvTvOut2.setText("Connect to " + bd.getName() + " at " + bd.getAddress());
+            binding.vvTvOut2.setText("Connected to " + bd.getName() + " at " + bd.getAddress());
             binding.vvBluetoothIcon.setImageResource(R.drawable.bluetooth_icon);
+            binding.tvPowerStatus.setText(R.string.powerStatusLabelOn);
+            isPowerOn = true;
             isConnected = true;
         }
         catch (Exception e) {
@@ -233,6 +235,10 @@ public class ConnectFragment extends Fragment {
             // arguments
             buffer[9] = (byte) 0x01;    // CMD: GET_ON_OF
             buffer[10] = 0;             // to hold return
+
+            /**
+             * note: not totally sure if this function works
+             */
 
             cv_os.write(buffer);
             cv_os.flush();

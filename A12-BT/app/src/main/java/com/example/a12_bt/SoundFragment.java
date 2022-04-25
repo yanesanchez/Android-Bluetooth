@@ -92,7 +92,7 @@ public class SoundFragment extends Fragment {
         }
         catch (Exception e) {
             // TODO add error to new text view
-            //binding.vvTvOut1.setText("Error in PlayTone(" + e.getMessage() + ")");
+            binding.tvSoundStatus.setText("Error in PlayTone(" + e.getMessage() + ")");
         }
     }
 }

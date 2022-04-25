@@ -18,6 +18,9 @@
     <string name="statusLabelOff">Device is NOT connected.</string>
     <string name="statusLabelOn">Device is connected.</string>
 
+    <string name="powerStatusLabelOff">System: OFF</string>
+    <string name="powerStatusLabelOn">System: ON</string>
+
     <string name="tabItem1">Drive</string>
     <string name="tabItem2">Sound</string>
     <string name="tabItem3">Sensor</string>
