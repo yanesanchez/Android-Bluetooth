@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
     private ActivityMainBinding binding;
 
     // Data stream to/from NXT bluetooth
-    private InputStream cv_is = null;
-    private OutputStream cv_os = null;
+    //private InputStream cv_is = null;
+    //private OutputStream cv_os = null;
 
     // BT Variables
     private final String CV_ROBOTNAME = "W";
@@ -47,17 +47,19 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
     SensorFragment fragSensor;
     SoundFragment fragSound;
 
-    // Bottom Tab Bar
+
     private TabLayout cv_tabBar;
 
     /* onCreate START --------------------------------------- */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
+        // +++
         // Create fragments for Drive & Connect
         fragDrive = new DriveFragment();
         fragConnect = new ConnectFragment(MainActivity.this);
@@ -66,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
 
         cv_tabBar = binding.tabLayout;
 
-        // TAB SELECT LISTENER
         // tab sync (2a) : tablayout.addOnTabSelectedListener -- tab changes page
         cv_tabBar.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-        setContentFragment(3);
+
 
     }
     /* onCreate END --------------------------------------- */
@@ -105,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
                 loadFragment(this, R.id.vv_fragmentContainer, fragSensor, "SensorFragment");
                 break;
             case 3:
-                //getSupportFragmentManager().saveFragmentInstanceState(fragConnect);
                 loadFragment(this, R.id.vv_fragmentContainer, fragConnect, "ConnectFragment");
                 break;
         }
@@ -114,27 +114,18 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
     @Override
     public void cf_firedByFragment(String str, int source) {
         switch (source) {
-            case 0:
-                setContentFragment(0);
-                getSupportFragmentManager().executePendingTransactions();
-                //fragDrive
-                break;
             case 1:
                 setContentFragment(1);
                 getSupportFragmentManager().executePendingTransactions();
-                //fragSound
+                //fragDrive
                 break;
             case 2:
                 setContentFragment(2);
                 getSupportFragmentManager().executePendingTransactions();
-                //fragSensor
-                break;
-            case 3:
-                setContentFragment(3);
                 //fragConnect
                 break;
-
         }
+
     }
 
     // MENU OPTIONS ==================
@@ -145,33 +136,32 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
     //Overriding onOptionsItemSelected to perform event on menu items
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.menu_first: cpf_requestBTPermissions();
+            case R.id.menu_first: /*cpf_requestBTPermissions();*/
                 return true;
-            case R.id.menu_second: cv_btDevice = cpf_locateInPairedBTList(CV_ROBOTNAME);
+            case R.id.menu_second: /*cv_btDevice = cpf_locateInPairedBTList(CV_ROBOTNAME);*/
                 return true;
-            case R.id.menu_third: cpf_connectToEV3(cv_btDevice);
+            case R.id.menu_third: /*cpf_connectToEV3(cv_btDevice);*/
                 return true;
-            case R.id.menu_fourth: cpf_EV3MoveMotor();
+            case R.id.menu_fourth: /*cpf_EV3MoveMotor();*/
                 return true;
-            case R.id.menu_fifth: cpf_EV3PlayTone();
+            case R.id.menu_fifth: /*cpf_EV3PlayTone();*/
                 return true;
-            case R.id.menu_sixth: cpf_disconnFromEV3(cv_btDevice);
+            case R.id.menu_sixth: /*cpf_disconnFromEV3(cv_btDevice);*/
                 return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
     }
 
-    /* ALL FOLLOWING METHODS MOVED TO THEIR RESPECTIVE FRAGMENTS */
+
     // --- MENU OPTION 4
     // Communication Developer Kit Page 27
     // 4.2.2 Start motor B & C forward at power 50 for 3 rotation and braking at destination
-    private void cpf_EV3MoveMotor() {
+    /*private void cpf_EV3MoveMotor() {
         try {
             byte[] buffer = new byte[20];       // 0x12 command length
 
@@ -210,14 +200,14 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
             cv_os.flush();
         }
         catch (Exception e) {
+            // TODO add error to new textView
            // binding.vvTvOut1.setText("Error in MoveForward(" + e.getMessage() + ")");
-            Toast.makeText(MainActivity.this, "Error in MoveForward(" + e.getMessage() + ")", Toast.LENGTH_SHORT).show();
         }
-    } /// moved to DriveFragment
+    } */// moved to DriveFragment
 
     // --- MENU OPTION 5
     // 4.2.5 Play a 1Kz tone at level 2 for 1 sec.
-
+    /*
     private void cpf_EV3PlayTone() {
         // +++
         try {
@@ -254,11 +244,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
             cv_os.flush();
         }
         catch (Exception e) {
+            // TODO add error to new text view
             //binding.vvTvOut1.setText("Error in PlayTone(" + e.getMessage() + ")");
-            Toast.makeText(MainActivity.this, "Error in PlayTone(" + e.getMessage() + ")", Toast.LENGTH_SHORT).show();
-
         }
-    }
+    }*/
 
     // ******** MOVED TO CONNECT-FRAGMENT
     // BLUETOOTH ===============================
@@ -266,23 +255,18 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED) {
             //binding.vvTvOut1.setText("BLUETOOTH_SCAN already granted.\n");
-            Toast.makeText(MainActivity.this, "BLUETOOTH_SCAN already granted", Toast.LENGTH_SHORT).show();
         }
         else {
            // binding.vvTvOut1.setText("BLUETOOTH_SCAN NOT granted.\n");
-            Toast.makeText(MainActivity.this, "BLUETOOTH_SCAN NOT granted", Toast.LENGTH_SHORT).show();
         }
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
            // binding.vvTvOut2.setText("BLUETOOTH_CONNECT NOT granted.\n");
-            Toast.makeText(MainActivity.this, "BLUETOOTH_SCAN NOT granted", Toast.LENGTH_SHORT).show();
         }
         else {
             //binding.vvTvOut2.setText("BLUETOOTH_CONNECT already granted.\n");
-            Toast.makeText(MainActivity.this, "BLUETOOTH_SCAN already granted", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     // ALL MOVED TO CONNECT-FRAGMENT ===============
     // --- MENU OPTION 1
@@ -314,7 +298,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
                     "BLUETOOTH_CONNECT already granted", Toast.LENGTH_SHORT) .show();
         }
     }
-
     // ******** MOVED TO CONNECT-FRAGMENT
     // --- MENU OPTION 2
     // Modify from chap14, pp390 findRobot()
@@ -328,56 +311,50 @@ public class MainActivity extends AppCompatActivity implements FragmentDataPassL
                 lv_bd = lv_it.next();
                 if (lv_bd.getName().equalsIgnoreCase(name)) {
                     //binding.vvTvOut1.setText(name + " is in paired list");
-                    Toast.makeText(MainActivity.this, name + " is in paired list", Toast.LENGTH_SHORT).show();
                     return lv_bd;
                 }
             }
             // binding.vvTvOut1.setText(name + " is NOT in paired list");
-            Toast.makeText(MainActivity.this, name + " is NOT in paired list", Toast.LENGTH_SHORT).show();
         }
         catch (Exception e) {
             // binding.vvTvOut1.setText("Failed in findRobot() " + e.getMessage());
-            Toast.makeText(MainActivity.this, "Failed in findRobot() " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         return null;
     }
 
-
     // ******** MOVED TO CONNECT-FRAGMENT
     // --- MENU OPTION 3
     // Modify from chap14, pp391 connectToRobot()
-
+    /*
     private void cpf_connectToEV3(BluetoothDevice bd) {
         try  {
             cv_btSocket = bd.createRfcommSocketToServiceRecord
                     (UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
             cv_btSocket.connect();
             // binding.vvTvOut2.setText("Connect to " + bd.getName() + " at " + bd.getAddress());
-            Toast.makeText(MainActivity.this, "Connect to " + bd.getName() + " at " + bd.getAddress(), Toast.LENGTH_SHORT).show();
         }
         catch (Exception e) {
             // binding.vvTvOut2.setText("Error interacting with remote device [" + e.getMessage() + "]");
-            Toast.makeText(MainActivity.this, "Error interacting with remote device [" + e.getMessage() + "]", Toast.LENGTH_SHORT).show();
         }
     }
 
+     */
 
     // ******** MOVED TO CONNECT-FRAGMENT
     // --- MENU OPTION 6
-
+    /*
     private void cpf_disconnFromEV3(BluetoothDevice bd) {
         try {
             cv_btSocket.close();
             cv_is.close();
             cv_os.close();
             // binding.vvTvOut2.setText(bd.getName() + " is disconnect " );
-            Toast.makeText(MainActivity.this, bd.getName() + " is disconnected " , Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             //binding.vvTvOut2.setText("Error in disconnect -> " + e.getMessage());
-            Toast.makeText(MainActivity.this, "Error in disconnect -> " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
+     */
     //-------------------------------------
 
 

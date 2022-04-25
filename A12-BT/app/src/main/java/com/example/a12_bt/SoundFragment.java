@@ -40,13 +40,6 @@ public class SoundFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentSoundBinding.inflate(inflater, container, false);
 
-        // bind UI to sound operations
-        binding.vvBtnStopSound.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cpf_EV3StopTone();
-            }
-        });
         binding.vvBtnPlaySound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,12 +70,12 @@ public class SoundFragment extends Fragment {
         return binding.getRoot();
     }
 
-    /* --- PLAY TONE */
+    // --- PLAY TONE
     // 4.2.5 Play a 1Kz tone at level 2 for 1 sec.
     // Communication Developer Kit, pg 30
     private void cpf_EV3PlayTone() {
+        // +++
         try {
-            binding.tvSoundStatus.setText(R.string.playTone);
             byte[] buffer = new byte[17];       // 0x12 command length
 
             buffer[0] = (byte) (17 - 2);
@@ -98,17 +91,15 @@ public class SoundFragment extends Fragment {
             buffer[7] = (byte) 0x94;    // op code - opSound(CMD...)
             buffer[8] = 1;              // CMD: TONE
 
-            buffer[9] = (byte) 0x81;    // op code - opUI_Read (CMD, ...); Firmware pg90
-
+            buffer[9] = (byte) 0x81;    // op code - opUI_Read (CMD, ...)
             buffer[10] = 2;             // level 2
+
             buffer[11] = (byte) 0x82;   // op code - opUI_WRITE (CMD, ...)
-
             buffer[12] = (byte) 0xE8;
-
             buffer[13] = 3;
+
             buffer[14] = (byte) 0x82;   // op code - opUI_WRITE (CMD, ...)
             buffer[15] = (byte) 0xE8;
-
             buffer[16] = 3;
 
             cv_os.write(buffer);
@@ -119,10 +110,10 @@ public class SoundFragment extends Fragment {
         }
     }
 
-    /* --- PAUSE TONE */
+
     private void cpf_EV3PauseTone() {
+        // +++
         try {
-            binding.tvSoundStatus.setText(R.string.pauseTone);
             byte[] buffer = new byte[17];       // 0x12 command length
 
             buffer[0] = (byte) (17 - 2);
@@ -146,10 +137,10 @@ public class SoundFragment extends Fragment {
         }
     }
 
-    /* --- Stop TONE */
-    private void cpf_EV3StopTone() {
+    private void cpf_volumeUp(){
+        // +++
         try {
-            binding.tvSoundStatus.setText(R.string.stopTone);
+            // TODO implement Volume Up ----------------------
             byte[] buffer = new byte[17];       // 0x12 command length
 
             buffer[0] = (byte) (17 - 2);
@@ -169,46 +160,14 @@ public class SoundFragment extends Fragment {
             cv_os.flush();
         }
         catch (Exception e) {
-            binding.tvSoundStatus.setText("Error in StopTone(" + e.getMessage() + ")");
-        }
-    }
-
-    /* VOLUME UP */
-    private void cpf_volumeUp(){
-        try {
-            // TODO implement Volume Up ----------------------
-            binding.tvSoundStatus.setText(R.string.volumeUp);
-            byte[] buffer = new byte[11];       // 0x12 command length
-
-            buffer[0] = (byte) (11 - 2);
-            buffer[1] = 0;
-
-            buffer[2] = 34;
-            buffer[3] = 12;
-
-            buffer[4] = (byte) 0x80;    // command type
-            buffer[5] = 0;
-            buffer[6] = 0;
-
-            buffer[7] = (byte) 0x94;    // op code - opSound(CMD...)
-            buffer[8] = (byte) 0x00;    // CMD: BREAK
-
-            buffer[9] = (byte) 0x94;    // op code - opSound(CMD...)
-            buffer[10] = (byte) 0x03;    // CMD: BREAK
-
-            cv_os.write(buffer);
-            cv_os.flush();
-        }
-        catch (Exception e) {
             binding.tvSoundStatus.setText("Error in VolumeUp(" + e.getMessage() + ")");
         }
     }
 
-    /* VOLUME DOWN */
     private void cpf_volumeDown(){
+        // +++
         try {
             // TODO implement Volume Down ----------------------
-            binding.tvSoundStatus.setText(R.string.volumeDown);
             byte[] buffer = new byte[17];       // 0x12 command length
 
             buffer[0] = (byte) (17 - 2);
@@ -231,5 +190,6 @@ public class SoundFragment extends Fragment {
             binding.tvSoundStatus.setText("Error in VolumeDown(" + e.getMessage() + ")");
         }
     }
+
 
 }

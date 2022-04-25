@@ -30,7 +30,6 @@ public class SensorFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,6 +40,7 @@ public class SensorFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 cpf_lightSensorPort1();
+
             }
         });
         binding.vvBtnLightSensorPort3.setOnClickListener(new View.OnClickListener() {
@@ -55,17 +55,19 @@ public class SensorFragment extends Fragment {
                 cpf_drawToDisplay();
             }
         });
+
         return binding.getRoot();
     }
 
-    /* FUNCTION ------------ READ LIGHT SENSOR AS COLOR - SENSOR PORT 1 */
+
+
     // opINPUT_DEVICE,LC0(READY_SI),LC0(LAYER_0),LC0(SENSOR_PORT_1),LC0(DO_NOT_CHANGE_TYPE), LC0(MODE_2),LC0(ONE_DATA_SET),LCO(GLOBAL_VAR_INDEX0)
     // Communication Developer Kit, pg 29
     // read light sensor connected to port 1 as COLOR
     public void cpf_lightSensorPort1() {
         try {
-            binding.tvSensorStatus.setText(R.string.sensorLightButton1);
-            // 0D00xxxx 00 04 00 99 1D 00 00 00 02 01 60
+            binding.tvSensorStatus.setText("System Power: ON");
+            //0D00xxxx 00 04 00 99 1D 00 00 00 02 01 60
             byte[] buffer = new byte[15];       // command length
 
             buffer[0] = (byte) (15-2);
@@ -100,12 +102,13 @@ public class SensorFragment extends Fragment {
         }
     }
 
-    /* FUNCTION ------------ READ LIGHT SENSOR VALUE - SENSOR PORT 3 */
+
     // opINPUT_DEVICE,LC0(READY_SI),LC0(LAYER_0),LC0(SENSOR_PORT_3),LC0(DO_NOT_CHANGE_TYPE), LC0(MODE_0),LC0(ONE_DATA_SET),LCO(GLOBAL_VAR_INDEX0)
     // Communication Developer Kit, pg 28
+    // read light sensor value on sensor port 3
     public void cpf_lightSensorPort3() {
         try {
-            binding.tvSensorStatus.setText(R.string.sensorLightButton3);
+            binding.tvSensorStatus.setText("System Power: ON");
             // 0D00xxxx 0004 00 99 1D 00 02 00 00 01 60
             byte[] buffer = new byte[15];       // command length
 
@@ -141,12 +144,12 @@ public class SensorFragment extends Fragment {
         }
     }
 
-    /* FUNCTION ------------ SHOW PICTURE ON DISPLAY */
     // Communication Developer Kit, pg 31
+    // show a picture in the display
     // 2C000000800000 84 13 00 82 00 00 82 00 00 84  1C 01 82  00 00 82   32 00 84   75 69 2F    6D 69 6E   64 73 74   6F 72 6D   73 2E 72   67 66 00 84 00
     public void cpf_drawToDisplay() {
         try {
-            binding.tvSensorStatus.setText(R.string.sensorDrawDisplay);
+            binding.tvSensorStatus.setText("System Power: ON");
             byte[] buffer = new byte[46];       // command length
 
             buffer[0] = (byte) 0x2C;
